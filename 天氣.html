@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather App</title>
+</head>
+<body>
+  <div id="weather"></div>
+  <script>
+  
+    function makeRequest() {
+      xhr = new XMLHttpRequest();
+      xhr.onload= function() { 
+        // 這裡處理傳回來的值
+         // 發現傳回來的東西是字串，所以為了要 access 裡面 property 的值，要把 string 轉回 object 。宣告一個叫做 response 的 variable 來放這個 object 。
+        var response = JSON.parse(this.responseText);
+        var city = response.city.name + ", " +response.city.country;
+        var weatherTitle = response.list[0].weather[0].main;
+        var temp = response.list[0].main.temp + "°";
+        
+        var weatherContainer = document.querySelector('#weather')
+        weatherContainer.innerHTML= city + "<br/>"+ weatherTitle + "<br/>"+temp ;
+      }
+      // 
+      xhr.open('GET','http://api.openweathermap.org/data/2.5/forecast?q=Taichung,tw&APPID=7e8f39c79494125f596587e066b4f581&lang=zh_tw&units=metric', true )  
+      xhr.send()
+      }
+      makeRequest();
+      
+  </script>
+</body>
+</html>
